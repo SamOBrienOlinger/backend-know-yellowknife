@@ -90,10 +90,10 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'corsheaders',
     'profiles',      # User profiles
-    # 'posts',         # Posts (or "social" app)
-    # 'comments',      # Comments on posts
-    # 'likes',         # Likes on posts
-    # 'followers',     # Followers and following system
+    'posts',         # Posts (or "social" app)
+    'comments',      # Comments on posts
+    'likes',         # Likes on posts
+    'followers',     # Followers and following system
 ]
 
 SITE_ID = 1
