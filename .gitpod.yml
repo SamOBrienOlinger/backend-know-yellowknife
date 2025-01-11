@@ -1,0 +1,18 @@
+tasks:
+  - init: |
+      # Activate virtual environment
+      source env/bin/activate
+      # Export environment variables
+      export SECRET_KEY='yellowknife-4-life'
+      export DEBUG='True'
+      export ALLOWED_HOSTS='localhost,https://backend-know-yellowknife-2a56f5d1f310.herokuapp.com'
+      export DATABASE_URL='postgresql://neondb_owner:DOlngwE1NoV0@ep-weathered-math-a2da4heb.eu-central-1.aws.neon.tech/neondb?sslmode=require'
+      export CLIENT_ORIGIN='http://localhost:3000'
+      export CLIENT_ORIGIN_DEV='https://3000-samobrienol-backendknow-ow5rhbepic7.ws-eu117.gitpod.io'
+      # Install dependencies
+      pip install -r requirements.txt
+      # Run database migrations
+      python manage.py migrate
+  - command: |
+      # Start the development server
+      source env/bin/activate && python manage.py runserver 8080
