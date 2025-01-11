@@ -3,6 +3,8 @@ import os
 import re
 import dj_database_url
 
+print("DATABASE_URL:", os.environ.get('DATABASE_URL'))
+
 # Load environment variables
 if os.path.exists('env.py'):
     import env
@@ -14,9 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    os.environ.get('ALLOWED_HOST', 'localhost'),
-]
+# ALLOWED_HOSTS = [
+#     os.environ.get('ALLOWED_HOST', 'localhost'),
+# ]
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # Cloudinary for Media Storage
 CLOUDINARY_STORAGE = {
@@ -86,10 +90,10 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'corsheaders',
     'profiles',      # User profiles
-    'posts',         # Posts (or "social" app)
-    'comments',      # Comments on posts
-    'likes',         # Likes on posts
-    'followers',     # Followers and following system
+    # 'posts',         # Posts (or "social" app)
+    # 'comments',      # Comments on posts
+    # 'likes',         # Likes on posts
+    # 'followers',     # Followers and following system
 ]
 
 SITE_ID = 1
@@ -104,6 +108,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+]
+
+ROOT_URLCONF = 'backend.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],  # Add directories for custom templates if needed
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',  # Required by allauth
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 # Database Configuration
