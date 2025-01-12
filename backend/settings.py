@@ -16,11 +16,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# ALLOWED_HOSTS = [
-#     os.environ.get('ALLOWED_HOST', 'localhost'),
-# ]
-
+# Allowed Hosts
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000', 'https://8000-samobrienol-backendknow-ow5rhbepic7.ws-eu117.gitpod.io',
+]
+
+# Dynamically add Gitpod or other environments to CSRF Trusted Origins
+if 'CLIENT_ORIGIN' in os.environ:
+    CSRF_TRUSTED_ORIGINS.append(os.environ.get('CLIENT_ORIGIN'))
+if 'CLIENT_ORIGIN_DEV' in os.environ:
+    client_origin_dev = os.environ.get('CLIENT_ORIGIN_DEV', '')
+    if 'gitpod.io' in client_origin_dev:
+        match = re.match(r'^https:\/\/\d+-', client_origin_dev)
+        if match:
+            extracted_url = f"{match.group(0)}{os.environ.get('GITPOD_WORKSPACE_URL').split('//')[-1]}"
+            CSRF_TRUSTED_ORIGINS.append(extracted_url)
+    else:
+        CSRF_TRUSTED_ORIGINS.append(client_origin_dev)
 
 # Cloudinary for Media Storage
 CLOUDINARY_STORAGE = {
@@ -49,6 +64,7 @@ JWT_AUTH_SAMESITE = 'None'
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('CLIENT_ORIGIN', ''),
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 
 if 'CLIENT_ORIGIN_DEV' in os.environ:
@@ -67,7 +83,6 @@ if 'CLIENT_ORIGIN_DEV' in os.environ:
         CORS_ALLOWED_ORIGINS = [
             client_origin_dev,
         ]
-
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -160,4 +175,3 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
