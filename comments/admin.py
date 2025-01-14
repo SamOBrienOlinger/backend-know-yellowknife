@@ -3,7 +3,6 @@ from .models import Comment
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'post', 'content', 'created_at')  # Use 'profile' instead of 'user'
-    search_fields = ('profile__owner__username', 'post__title')  # Use 'profile__owner__username'
+    list_display = ('profile', 'post', 'text', 'created_at')  # Ensure 'text' matches the field in the model
+    search_fields = ('profile__owner__username', 'post__title')  # Ensure valid search fields
     list_filter = ('created_at',)
-

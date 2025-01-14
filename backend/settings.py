@@ -109,6 +109,8 @@ INSTALLED_APPS = [
     'comments',      # Comments on posts
     'likes',         # Likes on posts
     'followers',     # Followers and following system
+    'quiz',          # Quiz scores unique to a user's profile
+    'social',
 ]
 
 SITE_ID = 1
