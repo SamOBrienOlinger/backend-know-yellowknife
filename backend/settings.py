@@ -104,13 +104,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
     'corsheaders',
-    'profiles',      # User profiles
-    'posts',         # Posts (or "social" app)
-    'comments',      # Comments on posts
-    'likes',         # Likes on posts
-    'followers',     # Followers and following system
-    'quiz',          # Quiz scores unique to a user's profile
+    'profiles',       
+    'posts',         
+    'comments',      
+    'likes',         
+    'followers',     
+    'quiz',          
     'social',
+    'activities',
 ]
 
 SITE_ID = 1

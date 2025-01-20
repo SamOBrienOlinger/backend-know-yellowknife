@@ -1,6 +1,7 @@
 from django.db import models
-from profiles.models import Profile
 from posts.models import Post
+from profiles.models import Profile
+
 
 class Comment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comments_from_social")

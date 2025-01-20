@@ -1,6 +1,7 @@
 from django.db import models
 from profiles.models import Profile
 
+
 class QuizScore(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='quiz_scores')
     score = models.IntegerField()
