@@ -4,7 +4,7 @@ A Django REST Framework development backend for a community-learning platform.
 
 **Python · Django · Django REST Framework**
 
-[Getting started](#getting-started) · [Repository guide](#repository-guide) · [Checks](#checks-and-review) · [Credits](#credits-and-reuse)
+[Getting started](#getting-started) · [Data model](#entity-relationship-diagrams) · [Repository guide](#repository-guide) · [Checks](#checks-and-review) · [Credits](#credits-and-reuse)
 
 ## What you can explore
 
@@ -13,6 +13,70 @@ A Django REST Framework development backend for a community-learning platform.
 - Authentication, origin configuration and Cloudinary media settings.
 
 > **Project notes:** This is a separate backend project. The currently deployed static Know Yellowknife quiz does not need this API to run.
+
+## Entity relationship diagrams
+
+### Profiles and quiz scores
+
+A user can have one member profile, which is normally created when the user account is created. Each quiz score belongs to one profile. This schema belongs to the development API. The public static site has its own browser-based quiz model. [Profile model](profiles/models.py) · [Quiz score model](quiz/models.py) · [Static site diagrams](https://github.com/SamOBrienOlinger/know-yellowknife#entity-relationship-diagrams)
+
+```mermaid
+erDiagram
+    accTitle: Know Yellowknife API profile and quiz score schema
+    accDescr: Each profile belongs to one user. A profile may accumulate any number of quiz score records.
+    User ||..o| Profile : owns
+    Profile ||..o{ "Quiz Score" : earns
+
+    Profile {
+        bigint id PK
+        int owner_id FK,UK
+        string name
+    }
+    "Quiz Score" {
+        bigint id PK
+        bigint profile_id FK
+        int score
+        datetime date_taken
+    }
+```
+
+### Community content
+
+The separate posts, comments, likes and followers apps relate their records to member profiles. The repository also defines a parallel set of models in its `social` app. Its comments and likes refer to the standalone posts app, while `social.Post` has its own profile relationship. [Posts](posts/models.py) · [Comments](comments/models.py) · [Likes](likes/models.py) · [Following](followers/models.py) · [Parallel social models](social/models.py)
+
+```mermaid
+erDiagram
+    accTitle: Know Yellowknife community models
+    accDescr: Profiles write posts and comments, add likes and follow other profiles. Comments and likes attach to posts.
+    Profile ||..o{ Post : writes
+    Profile ||..o{ Comment : authors
+    Profile ||..o{ Like : adds
+    Follower }o..|| Profile : "from profile"
+    Follower }o..|| Profile : "to profile"
+    Post ||..o{ Comment : receives
+    Post ||..o{ Like : receives
+
+    Post {
+        bigint id PK
+        bigint profile_id FK
+        string title
+    }
+    Comment {
+        bigint id PK
+        bigint profile_id FK
+        bigint post_id FK
+    }
+    Like {
+        bigint id PK
+        bigint profile_id FK
+        bigint post_id FK
+    }
+    Follower {
+        bigint id PK
+        bigint profile_id FK
+        bigint followed_profile_id FK
+    }
+```
 
 ## Getting started
 
